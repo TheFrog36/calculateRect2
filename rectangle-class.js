@@ -20,6 +20,13 @@ class Rectangle {
     //this.alpha = 1
   }
 
+  putColors(R, G, B){
+    this.red = R
+    this.green = G
+    this.blue = B
+    this.alpha = Math.round(Math.random() * 100) / 100
+  }
+
   static generateRBGString(red, green, blue, alpha) {
     return `rgba(${red}, ${green}, ${blue}, ${alpha})`
   }
@@ -58,7 +65,7 @@ class Rectangle {
 
   static randomRect(canvasWidth, canvasHeight, maxSize, minSize) {
     const newRect = new Rectangle()
-    newRect.fillColors()
+    //newRect.fillColors()
     newRect.generateCenterCoordinates(canvasWidth, canvasHeight)
     newRect.generateDimensions(canvasWidth, canvasHeight, maxSize, minSize)
     newRect.generateRotation()
