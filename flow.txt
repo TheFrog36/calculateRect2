@@ -1,0 +1,7 @@
+putPixel invece di passare il punto nell'array, lo metto in un oggetto 'perimeter'
+
+Controllo il risultato di quel rettangolo con l'array output e target
+
+Guardo il risultato e lo salvo
+
+Seleziono il n1 e lo disegno su array e lo mando allo script	
