@@ -6,6 +6,7 @@ html, body {
   background-color: rgba(53, 53, 53, 1);
 }
 
+
 #output-div{
   position: relative;
   display: inline-block;
@@ -19,4 +20,14 @@ html, body {
   left: 0px;
   top: 0px;
   background-color: red;
+}
+
+#input-canvas{
+  display: none;
+}
+
+#output-text-div{
+  width: 100%;
+  display: none;
+  overflow: scroll;
 }

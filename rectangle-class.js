@@ -138,7 +138,7 @@ class Rectangle {
     const sy = y0 < y1 ? 1 : -1
     let error = dx + dy
     while (true) {
-      if(y0 > 0 && y0 < canvasHeight){
+      if(y0 >= 0 && y0 < canvasHeight){
         let x 
         if(x0 < 0) x = 0
         else if(x0 > canvasWidth) x = canvasWidth

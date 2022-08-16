@@ -1,10 +1,15 @@
 let width // Canvas width based on img width
 let height // Canvas height based on img height
-const maxRects = 200 // How many rects are created per cycle
+const maxRects = 100 // How many rects are created per cycle
 const topSelection = 1 // Select the top 10 from a generation
 const numberOfGenerations = 1 // How many generations 
 const numberOfCycles = 20000 // How many rects will be added to the final image
-
+let rectMinSizeStart
+let rectMinSizeEnd
+let rectMaxSizeStart
+let rectMaxSizeEnd
+// let exponent
+let rectArrayInfo = []
 let msTime = 0
 
 const targetCanvas = document.getElementById('target-canvas')
@@ -47,15 +52,22 @@ function handleResponse(event){
       highlightRect(event.data.rectangle.x, event.data.rectangle.y)
       //drawVertices(event.data.vertices)
       //drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry, event.data.rectangle)
+      rectArrayInfo.push(...Object.values(event.data.rectangle))
       break;
     case 'input canvas data':
       const dataArray = new Uint8ClampedArray(event.data.inputData)
       const inputData = new ImageData(dataArray, width, height)
+      document.getElementById('input-canvas').style.display = 'inline-block'
       inputCTX.putImageData(inputData, 0, 0)
       msTime = new Date() - msTime
       console.log('Time to complete: ' + (msTime/1000) + ' seconds')
       document.getElementById('highlight-div').style.display = 'none'
       outputCanvas.style.display = 'none'
+      let diff = calculateDifferenceCanvas(dataArray, targetCanvasData.data)
+      diff = Math.round(diff*100*100)/100
+      console.log('Difference: ' + diff + '%')
+      console.log(rectArrayInfo)
+      displayOutputText()
       break
   }
 }
@@ -104,5 +116,47 @@ function highlightRect(x, y){
   div.style.left = (x -10) + 'px'
   div.style.top = (y - 10) + 'px' 
   console.log
+}
+
+function calculateDifferenceCanvas(array1, array2){
+  let tot = 0
+  for(let y = 0; y < height; y++){
+    for(let x = 0; x < width; x++){
+      const pos = (y * width + x) * 4
+      tot += calculateDifference(
+        [array1[pos], array1[pos+1], array1[pos+2]],
+        [array2[pos], array2[pos+1], array2[pos+2]])
+    }
+  }
+  return tot/(width * height * 4)
+}
+
+function calculateDifference(color1,color2){  //Differenza con pitagora (prob faster), fare tests con rettangoli uguali 
+  dRsqr = ((color1[0] - color2[0]) / 255  ) ** 2
+  dGsqr = ((color1[1] - color2[1]) / 255) ** 2
+  dBsqr = ((color1[2] - color2[2]) / 255) ** 2
+  deltaC = Math.sqrt(dRsqr + dGsqr + dBsqr)
+  return deltaC / 1.7320508075688772
+}
+
+function calculateDifference2(color1, color2) {
+  dRsqr = ((color1[0] - color2[0]) / 255) ** 2
+  dGsqr = ((color1[1] - color2[1]) / 255) ** 2
+  dBsqr = ((color1[2] - color2[2]) / 255) ** 2
+  Rmod = (color1[0] + color2[0]) / (2 * 255)
+  Rcomp = (2 + Rmod) * dRsqr
+  Gcomp = 4 * dGsqr
+  Bcomp = (3 - Rmod) * dBsqr
+  deltaC = Math.sqrt(Rcomp + Gcomp + Bcomp)
+  return deltaC / 3
+}
+
+function displayOutputText(){
+  const div = document.getElementById('output-text-div')
+  div.style.display = 'block'
+  div.innerHTML = rectArrayInfo
+}
+function start(){
+
 }
 init()

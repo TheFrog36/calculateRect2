@@ -3,6 +3,7 @@ let canvasWidth
 let canvasHeight
 let targetData
 
+const exponent = 20
 let nOfRects // How many rectangle generate in first generation per cycle
 let cycles // How many cycles (aka output rectangles)
 let topForNewGen  // How many rectangles select to make new gen
@@ -31,7 +32,7 @@ if ('function' === typeof importScripts) {
       outputArray = new Array(canvasWidth * canvasHeight * 4)
       outputArray.fill(255)
       for(let i = 0; i < cycles; i ++){
-        const reduFact = ((cycles-i) / cycles) ** 20
+        const reduFact = ((cycles-i) / cycles) ** exponent
         for(let k = 0; k < generations; k++){
           for(let j = 0; j < nOfRects; j++){
             const maxSize = reduFact * 150 + 2
@@ -52,8 +53,11 @@ if ('function' === typeof importScripts) {
           }
         }
         if(bestScore === 0) continue
+        //bestRect.alpha = (bestRect.alpha + 1) / 2  //Only when using add2colors2 in checkRectangleDifference
+        
         self.postMessage({info: 'rectangles', rectangle: bestRect, vertices: bestVertices, perimeter: bestPerimeter})
         drawRectOnInput(bestRect, bestPerimeter, bestVertices[3].Ry)
+        if(i%10==0) console.log(i)
         bestScore = 0
       }
       self.postMessage({info:'input canvas data', inputData: outputArray})
@@ -130,4 +134,11 @@ function add2colors(color1, color2){
   const alpha = color1[3] + (1-color1[3])
   const finalColor = [interpolated[0]*alpha, interpolated[1]*alpha, interpolated[2]*alpha, alpha]
   return finalColor
+}
+
+function add2colors2(color1, color2){
+  const red = (color1[0] + color2[0]) / 2
+  const green = (color1[1] + color2[1]) / 2
+  const blue = (color1[2] + color2[2]) / 2
+  return [red, green, blue]
 }
