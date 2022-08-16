@@ -1,9 +1,11 @@
 let width // Canvas width based on img width
 let height // Canvas height based on img height
-const maxRects = 100 // How many rects are created per cycle
+const maxRects = 1000000 // How many rects are created per cycle
 const topSelection = 1 // Select the top 10 from a generation
 const numberOfGenerations = 1 // How many generations 
-const numberOfCycles = 50000 // How many rects will be added to the final image
+const numberOfCycles = 10000 // How many rects will be added to the final image
+
+let msTime = 0
 
 const targetCanvas = document.getElementById('target-canvas')
 const targetCTX = targetCanvas.getContext('2d')
@@ -15,9 +17,10 @@ const inputCTX = inputCanvas.getContext('2d')
 const worker = new Worker('./worker.js')
 let targetCanvasData // var for image pixel data
 
-const imgUrl = './images/cyberpunk.png'
+const imgUrl = './images/cat.png'
 
 function init(){
+  msTime = new Date()
   const targetImage = new Image()
   targetImage.src = imgUrl
   targetImage.onload = () => {
@@ -38,17 +41,20 @@ function init(){
 }
 
 function handleResponse(event){
-  if(event.data.info === 'rectangles'){
-    drawRectOnCanvas(event.data.rectangle, outputCTX)
-    //drawVertices(event.data.vertices)
-    //drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry, event.data.rectangle)
+  switch(event.data.info){
+    case 'rectangles':
+      drawRectOnCanvas(event.data.rectangle, outputCTX)
+      //drawVertices(event.data.vertices)
+      //drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry, event.data.rectangle)
+      break;
+    case 'input canvas data':
+      const dataArray = new Uint8ClampedArray(event.data.inputData)
+      const inputData = new ImageData(dataArray, width, height)
+      inputCTX.putImageData(inputData, 0, 0)
+      msTime = new Date() - msTime
+      console.log('Time to complete: ' + (msTime/1000) + ' seconds')
+      break
   }
-  else if(event.data.info === 'input canvas data'){
-    const dataArray = new Uint8ClampedArray(event.data.inputData)
-    const inputData = new ImageData(dataArray, width, height)
-    inputCTX.putImageData(inputData, 0, 0)
-  }
-
 }
 
 function prepareCanvas(image){

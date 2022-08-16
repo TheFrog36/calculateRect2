@@ -32,11 +32,11 @@ if ('function' === typeof importScripts) {
       outputArray.fill(255)
       for(let i = 0; i < cycles; i ++){
         const reduFact = ((cycles-i) / cycles) ** 20
-        console.log(Math.round(reduFact * 100) / 100)
         for(let k = 0; k < generations; k++){
           for(let j = 0; j < nOfRects; j++){
-            const maxSize = reduFact * 200 + 2
-            const minSize = reduFact * 100 + 1
+            const maxSize = reduFact * 200 + 4
+            // const minSize = reduFact * 10 + 1
+            const minSize = 1
             rectangle = Rectangle.randomRect(canvasWidth, canvasHeight, maxSize, minSize)
             const pos = (rectangle.y * canvasWidth + rectangle.x) * 4
             rectangle.putColors(targetData.data[pos], targetData.data[pos+1], targetData.data[pos+2])
@@ -52,8 +52,9 @@ if ('function' === typeof importScripts) {
           }
         }
         if(bestScore === 0) continue
-        self.postMessage({info: 'rectangles', rectangle: bestRect, vertices: bestVertices, perimeter: bestPerimeter})
+        //self.postMessage({info: 'rectangles', rectangle: bestRect, vertices: bestVertices, perimeter: bestPerimeter})
         drawRectOnInput(bestRect, bestPerimeter, bestVertices[3].Ry)
+        if(i%100 == 0) console.log(i)
         bestScore = 0
       }
       self.postMessage({info:'input canvas data', inputData: outputArray})
