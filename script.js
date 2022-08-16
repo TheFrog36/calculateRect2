@@ -17,7 +17,7 @@ const inputCTX = inputCanvas.getContext('2d')
 const worker = new Worker('./worker.js')
 let targetCanvasData // var for image pixel data
 
-const imgUrl = './images/cat.png'
+const imgUrl = './images/monalisa.png'
 
 function init(){
   msTime = new Date()
