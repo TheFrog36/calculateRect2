@@ -31,11 +31,12 @@ if ('function' === typeof importScripts) {
       outputArray = new Array(canvasWidth * canvasHeight * 4)
       outputArray.fill(255)
       for(let i = 0; i < cycles; i ++){
-        const reduFact = ((cycles-i) / cycles) ** 8
+        const reduFact = ((cycles-i) / cycles) ** 20
+        console.log(Math.round(reduFact * 100) / 100)
         for(let k = 0; k < generations; k++){
           for(let j = 0; j < nOfRects; j++){
-            const maxSize = reduFact * 200 + 10
-            const minSize = reduFact * 150 + 2
+            const maxSize = reduFact * 200 + 2
+            const minSize = reduFact * 100 + 1
             rectangle = Rectangle.randomRect(canvasWidth, canvasHeight, maxSize, minSize)
             const pos = (rectangle.y * canvasWidth + rectangle.x) * 4
             rectangle.putColors(targetData.data[pos], targetData.data[pos+1], targetData.data[pos+2])

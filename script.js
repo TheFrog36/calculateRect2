@@ -1,9 +1,9 @@
 let width // Canvas width based on img width
 let height // Canvas height based on img height
-const maxRects = 1000 // How many rects are created per cycle
+const maxRects = 100 // How many rects are created per cycle
 const topSelection = 1 // Select the top 10 from a generation
 const numberOfGenerations = 1 // How many generations 
-const numberOfCycles = 3000 // How many rects will be added to the final image
+const numberOfCycles = 50000 // How many rects will be added to the final image
 
 const targetCanvas = document.getElementById('target-canvas')
 const targetCTX = targetCanvas.getContext('2d')

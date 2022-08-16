@@ -24,7 +24,7 @@ class Rectangle {
     this.red = R
     this.green = G
     this.blue = B
-    this.alpha = Math.round(Math.random() * 100) / 100
+    this.alpha = Math.round((Math.random() * 0.9 + 0.1) * 100) / 100  
   }
 
   static generateRBGString(red, green, blue, alpha) {
