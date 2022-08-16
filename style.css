@@ -6,6 +6,17 @@ html, body {
   background-color: rgba(53, 53, 53, 1);
 }
 
-#output-canvas{
-  display: none;
+#output-div{
+  position: relative;
+  display: inline-block;
+}
+
+#highlight-div{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background-color: red;
 }

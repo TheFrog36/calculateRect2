@@ -1,9 +1,9 @@
 let width // Canvas width based on img width
 let height // Canvas height based on img height
-const maxRects = 1000000 // How many rects are created per cycle
+const maxRects = 200 // How many rects are created per cycle
 const topSelection = 1 // Select the top 10 from a generation
 const numberOfGenerations = 1 // How many generations 
-const numberOfCycles = 10000 // How many rects will be added to the final image
+const numberOfCycles = 20000 // How many rects will be added to the final image
 
 let msTime = 0
 
@@ -44,6 +44,7 @@ function handleResponse(event){
   switch(event.data.info){
     case 'rectangles':
       drawRectOnCanvas(event.data.rectangle, outputCTX)
+      highlightRect(event.data.rectangle.x, event.data.rectangle.y)
       //drawVertices(event.data.vertices)
       //drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry, event.data.rectangle)
       break;
@@ -53,6 +54,8 @@ function handleResponse(event){
       inputCTX.putImageData(inputData, 0, 0)
       msTime = new Date() - msTime
       console.log('Time to complete: ' + (msTime/1000) + ' seconds')
+      document.getElementById('highlight-div').style.display = 'none'
+      outputCanvas.style.display = 'none'
       break
   }
 }
@@ -94,5 +97,12 @@ function drawPerimeter(perimeter, beginning, rectangle){
     outputCTX.fillRect(perimeter[i][0], i, 1, 1)
     outputCTX.fillRect(perimeter[i][perimeter[i].length-1], i, 1, 1)
   }
+}
+
+function highlightRect(x, y){
+  const div = document.getElementById('highlight-div')
+  div.style.left = (x -10) + 'px'
+  div.style.top = (y - 10) + 'px' 
+  console.log
 }
 init()
