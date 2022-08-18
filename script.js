@@ -20,6 +20,9 @@ let maxOffset
 let maxAlphaDifference
 
 let msTime = 0
+let currentCycle = 0
+let difference = -1
+let timeToComplete = -1
 let rectArrayInfo = []
 
 const targetCanvas = document.getElementById('target-canvas')
@@ -32,7 +35,7 @@ const inputCTX = inputCanvas.getContext('2d')
 const worker = new Worker('./worker.js')
 let targetCanvasData // var for image pixel data
 
-const imgUrl = './images/shrooms.png'
+const imgUrl = './images/cat.png'
 
 msTime = new Date()
 const targetImage = new Image()
@@ -75,24 +78,25 @@ function init() {
 function handleResponse(event) {
   switch (event.data.info) {
     case 'rectangles':
+      currentCycle++
       drawRectOnCanvas(event.data.rectangle, outputCTX)
       highlightRect(event.data.rectangle.x, event.data.rectangle.y)
       //drawVertices(event.data.vertices)
       //if(event.data.drawPeri) drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry)
       rectArrayInfo.push(...Object.values(event.data.rectangle))
+      updateInfos()
       break;
     case 'input canvas data':
       const dataArray = new Uint8ClampedArray(event.data.inputData)
       const inputData = new ImageData(dataArray, width, height)
       document.getElementById('input-canvas').style.display = 'inline-block'
       inputCTX.putImageData(inputData, 0, 0)
-      msTime = new Date() - msTime
-      console.log('Time to complete: ' + (msTime / 1000) + ' seconds')
+      timeToComplete = (new Date() - msTime) / 1000
       document.getElementById('highlight-div').style.display = 'none'
       outputCanvas.style.display = 'none'
-      let diff = calculateDifferenceCanvas(dataArray, targetCanvasData.data)
-      diff = Math.round(diff * 100 * 100) / 100
-      console.log('Difference: ' + diff + '%')
+      difference = calculateDifferenceCanvas(dataArray, targetCanvasData.data)
+      difference = Math.round(difference * 100 * 100) / 100
+      updateInfos()
       //displayOutputText()
       break
   }
@@ -208,7 +212,6 @@ function setRNumber() {
   topSelection = document.getElementById('top-selection-input').valueAsNumber
   numberOfGenerations = document.getElementById('n-generation-input').valueAsNumber
   nRectsFromOld = document.getElementById('n-R-from-old-input').valueAsNumber
-  console.log(typeof numberOfCycles)
 }
 
 function setSizes() {
@@ -236,11 +239,11 @@ function updateInfos(){
   const templateBaseInfo = `
     <div class="single-info">
       <div class="info-name">Total R</div>
-      <div class="info-value">${TR}</div>
+      <div class="info-value">${mark3Digits(TR)}</div>
     </div>
     <div class="single-info">
       <div class="info-name">cycle</div>
-      <div class="info-value">${numberOfCycles}</div>
+      <div class="info-value">${currentCycle}/${numberOfCycles}</div>
     </div>
     <div class="single-info">
       <div class="info-name">Starting R</div>
@@ -260,5 +263,53 @@ function updateInfos(){
       <div class="info-name">New R from old</div>
       <div class="info-value">${nRectsFromOld}</div>
     </div>`
+  const templateEnd = `
+    <div class="single-info">
+      <div class="info-name">Time to complete</div>
+      <div class="info-value">${timeToComplete}</div>
+    </div>
+    <div class="single-info">
+      <div class="info-name">Difference</div>
+      <div class="info-value">${difference}</div>
+    </div>`
+
   if(numberOfGenerations>0) info.innerHTML += templateGenerationInfo
+  if(difference != -1) info.innerHTML += templateEnd
+}
+
+function quantityInfo(){
+  const infoDiv = document.getElementById('setting-explanation-window')
+  document.getElementById('quantity-example-div').innerHTML = ''
+  infoDiv.style.display = 'flex'
+}
+
+function mark3Digits(number){
+  number = number.toString().split('').reverse().join('') 
+  number = number.replace(/(.{3})/g,"$1'")
+  number = number.split('').reverse()
+  if(number.length % 4 === 0) number.shift()
+  return number.join('')
+}
+
+function showQuanitiyExample(){
+  const div = document.getElementById('quantity-example-div')
+  div.innerHTML = '';
+  const cycles = document.getElementById('cycles-input').valueAsNumber
+  const startR = document.getElementById('starting-R-input').valueAsNumber
+  const generations = document.getElementById('n-generation-input').valueAsNumber
+  const topSelection = document.getElementById('top-selection-input').valueAsNumber
+  const newR = document.getElementById('n-R-from-old-input').valueAsNumber
+  console.log(cycles, startR, generations, topSelection, newR)
+  const TR = cycles * (startR + generations * topSelection * newR) 
+  const baseTemplate = `
+    With the current settings,<b> ${cycles}</b> rectangles will be used to make the final image.<br>
+    For each cycle, <b>${startR}</b> rectangles will be generated initially.<br>
+  `
+  div.innerHTML += baseTemplate
+  const noGenTemplate = 'Since there are <b>0</b> generations, no further selections will be made after the initial generation.<br>'
+  const genTemplate = `From the initial generation, the best <b>${topSelection}</b> rectangles will be selected and used to create the next generation.<br>For each best rectangle, <b> ${newR}</b> new rectangles will be created. This process will repeat for <b>${generations}</b> times <br>`
+  if(generations === 0) div.innerHTML += noGenTemplate
+  else div.innerHTML += genTemplate
+  const endTemplate = `A total of <b>${mark3Digits(TR)}</b> rectangles will be checked`
+  div.innerHTML += endTemplate
 }

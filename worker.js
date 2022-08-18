@@ -96,14 +96,13 @@ if ('function' === typeof importScripts) {
         bestScoresArray.fill(0)
         bestRectArray.fill()
         if (bestScore === 0) continue
-        if(i%10 ===0) console.log('gen: ' + (gen + 1) + ' cycle: ' + i)
+        //if(i%10 ===0) console.log('gen: ' + (gen + 1) + ' cycle: ' + i)
         gen = 0
         //bestRect.alpha = (bestRect.alpha + 1) / 2  //Only when using add2colors2 in checkRectangleDifference
         self.postMessage({ info: 'rectangles', rectangle: bestRect, vertices: bestVertices, perimeter: bestPerimeter, emprovement: bestScore, drawPeri: drawPeri })
         drawRectOnInput(bestRect, bestPerimeter, bestVertices[3].Ry)
         bestScore = 0
       }
-      console.log(counter)
       self.postMessage({ info: 'input canvas data', inputData: outputArray })
       console.log('worker done')
     }

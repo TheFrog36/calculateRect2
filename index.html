@@ -19,7 +19,10 @@
 
     <div id="settings">
       <div id="number-of-rectangles" class="settings-category">
-        <div class="settings-category-title">Number of rectangles</div>
+        <div class="single-setting">
+          <div class="settings-category-title">Quantity</div>
+          <div class="description-icon" onclick="quantityInfo()">i</div>
+        </div>
         <div class="single-setting">
           <div class="settings-text">Number of cycles</div>
           <input type="number" id='cycles-input' value="3000">
@@ -37,13 +40,16 @@
           <input type="number" id="top-selection-input" value="10">
         </div>
         <div class="single-setting">
-          <div class="settings-text">New R from old</div>
+          <div class="settings-text">New R</div>
           <input type="number" id="n-R-from-old-input" value="10">
         </div>
       </div>
 
       <div id="rectangle-sizes" class="settings-category">
-        <div class="settings-category-title">Rectangle sizes</div>
+        <div class="single-setting">
+          <div class="settings-category-title">Rectangle sizes</div>
+          <div class="description-icon">i</div>
+        </div>        
         <div class="single-setting">
           <div class="settings-text">Min start</div>
           <input type="number" id="min-start-size-input" value="0">
@@ -66,8 +72,22 @@
         </div>
       </div>
 
+      <div id="setting-explanation-window">
+        <span>Quantity handles how many rectangles will be generated.</span>
+        <span><b>Number of cycles</b> determinates how many rectangle will compose the final image. The following settings will be applied for each cycle.</span> 
+        <span><b>Starting R</b> is the amount of rectangles that will be generated for the first generation</span>
+        <span><b>N of generations</b> is the amount of generations after the first one</span>
+        <span><b>Top selections</b> tells how many rectangles will be selected from the past generation and used to make the new one</span>
+        <span><b>New R</b> is the amount of rectangles that will be generated for each rectangle of top selection. The difference between generations can be set in 'New gen diff'</span>
+        <button onclick="showQuanitiyExample()">See example</button>
+        <div id="quantity-example-div"></div>
+      </div>
+
       <div id="new-gen-diff" class="settings-category">
-        <div class="settings-category-title">New gen diff</div>
+        <div class="single-setting">
+          <div class="settings-category-title">New gen diff</div>
+          <div class="description-icon">i</div>
+        </div>        
         <div class="single-setting">
           <div class="settings-text">Color</div>
           <input type="number" id="color-difference-input" value="10">

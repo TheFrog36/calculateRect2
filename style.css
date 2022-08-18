@@ -39,7 +39,7 @@ html, body {
   top: 4px;
   right: 4px;
   gap: 4px;
-  background-color: white;  
+  background-color: rgb(242, 242, 242);  
   padding: 4px;
   border-radius: 4px;
 }
@@ -80,6 +80,20 @@ input[type=number]{
   justify-content: space-between;
 }
 
+#setting-explanation-window{
+  display: flex;
+  flex-direction: column;
+  /* display: none; */
+  position: absolute;
+  left: -320px;
+  width: 300px;
+  height: fit-content;
+  padding: 4px;
+  background-color: rgb(203, 203, 203);
+  border-radius: 4px;
+
+}
+
 #infos{
   display: none;
   position: fixed;
@@ -97,6 +111,15 @@ input[type=number]{
   display: flex;
   gap: 4px;
   justify-content: space-between;
+}
+
+.description-icon{
+  background-color: grey;
+  border-radius: 50%;
+  padding: 4px;
+  aspect-ratio: 1;
+  text-align: center;
+  font-style: italic;
 }
 
 #output-text-div{
