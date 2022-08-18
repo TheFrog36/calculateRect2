@@ -3,12 +3,14 @@ let canvasWidth
 let canvasHeight
 let targetData
 
-const exponent = 4
+let data
+let exponent 
 let nOfRects // How many rectangle generate in first generation per cycle
 let cycles // How many cycles (aka output rectangles)
 let topForNewGen  // How many rectangles select to make new gen
 let generations   // Number of generations
 let newRectsFromOld
+
 let vertices
 let perimeterArray
 let outputArray
@@ -18,35 +20,40 @@ let bestRect
 let bestPerimeter
 let bestScore = 0
 let bestVertices
-
+let hasFired = false
 let bestScoresArray = new Array(10).fill(0)
 let bestRectArray = new Array(10)
 
-let gen = 0
 
+let gen = 0  // USed to show from whick generation the best rectangle comes from
 if ('function' === typeof importScripts) {
   console.log('worker start')
   importScripts('./rectangle-class.js');
   self.addEventListener('message', function (event) {
     if (event.data.instruction === 'start') {
-      targetData = event.data.canvasData
-      canvasWidth = event.data.canvasData.width
-      canvasHeight = event.data.canvasData.height
-      nOfRects = event.data.nOfRects
-      cycles = event.data.cycles
-      topForNewGen = event.data.top
-      generations = event.data.generations
-      newRectsFromOld = event.data.nRectsFromOld
+      console.log(event.data)
+      data = event.data
+      targetData = data.canvasData
+      canvasWidth = data.canvasData.width
+      canvasHeight = data.canvasData.height
+      nOfRects = data.nOfRects
+      cycles = data.cycles
+      topForNewGen = data.top
+      generations = data.generations
+      newRectsFromOld = data.nRectsFromOld
+      exponent = data.exponent
+      topForNewGen = data.topSelection
+
       outputArray = new Array(canvasWidth * canvasHeight * 4)
       outputArray.fill(255)
       let counter = 0
       for (let i = 0; i < cycles; i++) {
         drawPerimeter = false
         const reduFact = ((cycles - i) / cycles) ** exponent
+        const minSize = reduFact * data.rectMinSizeStart + data.rectMinSizeEnd
+        const maxSize = reduFact * data.rectMaxSizeStart + data.rectMaxSizeEnd
         for (let j = 0; j < nOfRects; j++) {
           counter++
-          const maxSize = reduFact * 150 + 2
-          const minSize = 1
           rectangle = Rectangle.randomRect(canvasWidth, canvasHeight, maxSize, minSize)
           const pos = (rectangle.y * canvasWidth + rectangle.x) * 4
           rectangle.putColors(targetData.data[pos], targetData.data[pos + 1], targetData.data[pos + 2])
@@ -69,7 +76,7 @@ if ('function' === typeof importScripts) {
             for(let l = 0; l < newRectsFromOld; l++){
               counter++
               if(oldTopRects[k] === undefined) continue
-              rectangle = Rectangle.generateSimilarRect(oldTopRects[k], canvasHeight, canvasWidth, 10, 10, Rectangle.degToRad(15), 10, 0.5)
+              rectangle = Rectangle.generateSimilarRect(oldTopRects[k], canvasHeight, canvasWidth, data.maxColorDifference, data.maxSizeDifference, data.maxRotationDifference, data.maxOffset, data.maxAlphaDifference)
               vertices = rectangle.calculateVertices()
               perimeterArray = rectangle.calculatePerimeterArray(vertices, canvasWidth, canvasHeight)
               const difference = checkRectangleDifference(rectangle, perimeterArray, outputArray, vertices[3].Ry)

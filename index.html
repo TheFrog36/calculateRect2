@@ -16,10 +16,83 @@
       <div id="highlight-div"></div>
     </div>
     <canvas id="input-canvas"></canvas>
+
     <div id="settings">
-      <input type="number" id=''>
-      <button onclick="start()">start</button>
+      <div id="number-of-rectangles" class="settings-category">
+        <div class="settings-category-title">Number of rectangles</div>
+        <div class="single-setting">
+          <div class="settings-text">Number of cycles</div>
+          <input type="number" id='cycles-input' value="3000">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Starting R</div>
+          <input type="number" id="starting-R-input" value="1000">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">N of generations</div>
+          <input type="number" id="n-generation-input" value="0">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Top selection</div>
+          <input type="number" id="top-selection-input" value="10">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">New R from old</div>
+          <input type="number" id="n-R-from-old-input" value="10">
+        </div>
+      </div>
+
+      <div id="rectangle-sizes" class="settings-category">
+        <div class="settings-category-title">Rectangle sizes</div>
+        <div class="single-setting">
+          <div class="settings-text">Min start</div>
+          <input type="number" id="min-start-size-input" value="0">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Min end</div>
+          <input type="number" id="min-end-size-input" value="1">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Max start</div>
+          <input type="number" id="max-start-size-input" value="150">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Max end</div>
+          <input type="number" id="max-end-size-input" value="2">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Reduction factor</div>
+          <input type="number" id="reduction-factor-input" value="2">
+        </div>
+      </div>
+
+      <div id="new-gen-diff" class="settings-category">
+        <div class="settings-category-title">New gen diff</div>
+        <div class="single-setting">
+          <div class="settings-text">Color</div>
+          <input type="number" id="color-difference-input" value="10">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Size</div>
+          <input type="number" id="size-difference-input" value="10">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Position</div>
+          <input type="number" id="position-difference-input" value="5">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Rotation</div>
+          <input type="number" id="rotation-difference-input" value="10">
+        </div>
+        <div class="single-setting">
+          <div class="settings-text">Alpha</div>
+          <input type="number" id="alpha-difference-input" value="0.3">
+        </div>
+      </div>
+
+      <button onclick="start()" id="start-button">start</button>
     </div>
+
     <div id="infos">
   
     </div>
@@ -27,6 +100,6 @@
   </div>
 </body>
 <script src="./rectangle-class.js"></script>
-<script src="./worker.js"></script>
+<!-- <script src="./worker.js"></script> -->
 <script src="./script.js"></script>
 </html>

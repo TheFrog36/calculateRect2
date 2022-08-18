@@ -38,7 +38,7 @@ class Rectangle {
     this.y = Math.round(y)
   }
 
-  generateDimensions(canvasWidth, canvasHeight, maxSize, minSize){
+  generateDimensions(maxSize, minSize){
     // this.width = Math.round(Math.random() * 100 + 1)
     // this.height = Math.round(Math.random() * 100 + 1)
     this.width = Math.round(Math.random() * (maxSize - minSize) + minSize)
@@ -67,7 +67,7 @@ class Rectangle {
     const newRect = new Rectangle()
     //newRect.fillColors()
     newRect.generateCenterCoordinates(canvasWidth, canvasHeight)
-    newRect.generateDimensions(canvasWidth, canvasHeight, maxSize, minSize)
+    newRect.generateDimensions(maxSize, minSize)
     newRect.generateRotation()
     return newRect
   }
