@@ -31,7 +31,6 @@ if ('function' === typeof importScripts) {
   importScripts('./rectangle-class.js');
   self.addEventListener('message', function (event) {
     if (event.data.instruction === 'start') {
-      console.log(event.data)
       data = event.data
       targetData = data.canvasData
       canvasWidth = data.canvasData.width
@@ -97,7 +96,7 @@ if ('function' === typeof importScripts) {
         bestScoresArray.fill(0)
         bestRectArray.fill()
         if (bestScore === 0) continue
-        console.log('gen: ' + (gen + 1) + ' cycle: ' + i)
+        if(i%10 ===0) console.log('gen: ' + (gen + 1) + ' cycle: ' + i)
         gen = 0
         //bestRect.alpha = (bestRect.alpha + 1) / 2  //Only when using add2colors2 in checkRectangleDifference
         self.postMessage({ info: 'rectangles', rectangle: bestRect, vertices: bestVertices, perimeter: bestPerimeter, emprovement: bestScore, drawPeri: drawPeri })

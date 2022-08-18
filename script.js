@@ -19,7 +19,6 @@ let maxRotationDifference
 let maxOffset
 let maxAlphaDifference
 
-console.log(numberOfCycles * (maxRects + numberOfGenerations * topSelection * nRectsFromOld) + ' tot rects')
 let msTime = 0
 let rectArrayInfo = []
 
@@ -33,7 +32,7 @@ const inputCTX = inputCanvas.getContext('2d')
 const worker = new Worker('./worker.js')
 let targetCanvasData // var for image pixel data
 
-const imgUrl = './images/forest.png'
+const imgUrl = './images/shrooms.png'
 
 msTime = new Date()
 const targetImage = new Image()
@@ -46,6 +45,10 @@ targetImage.onload = () => {
 }
 
 function init() {
+  document.getElementById('highlight-div').style.display = 'block';
+  document.getElementById('settings').style.display = 'none'
+  document.getElementById('infos').style.display = 'flex'
+  updateInfos()
   worker.postMessage({
     instruction: 'start',
     canvasData: targetCanvasData,
@@ -224,4 +227,38 @@ function setNewRFromOld() {
   maxRotationDifference = Math.round(Rectangle.degToRad(maxRotationDifference) * 100) / 100
   maxOffset = document.getElementById('position-difference-input').valueAsNumber
   maxAlphaDifference = document.getElementById('alpha-difference-input').valueAsNumber
+}
+
+function updateInfos(){
+  const TR = numberOfCycles * (maxRects + numberOfGenerations * topSelection * nRectsFromOld) 
+
+  const info = document.getElementById('infos')
+  const templateBaseInfo = `
+    <div class="single-info">
+      <div class="info-name">Total R</div>
+      <div class="info-value">${TR}</div>
+    </div>
+    <div class="single-info">
+      <div class="info-name">cycle</div>
+      <div class="info-value">${numberOfCycles}</div>
+    </div>
+    <div class="single-info">
+      <div class="info-name">Starting R</div>
+      <div class="info-value">${maxRects}</div>
+    </div>`
+  info.innerHTML = templateBaseInfo
+  const templateGenerationInfo = `
+    <div class="single-info">
+      <div class="info-name">N generations</div>
+      <div class="info-value">${numberOfGenerations}</div>
+    </div>
+    <div class="single-info">
+      <div class="info-name">Top selection</div>
+      <div class="info-value">${topSelection}</div>
+    </div>
+    <div class="single-info">
+      <div class="info-name">New R from old</div>
+      <div class="info-value">${nRectsFromOld}</div>
+    </div>`
+  if(numberOfGenerations>0) info.innerHTML += templateGenerationInfo
 }

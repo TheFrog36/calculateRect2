@@ -25,6 +25,7 @@ html, body {
   left: 0px;
   top: 0px;
   background-color: red;
+  display: none;
 }
 
 #input-canvas{
@@ -80,7 +81,22 @@ input[type=number]{
 }
 
 #infos{
+  display: none;
+  position: fixed;
+  top: 4px;
+  left: 4px;
+  border-radius: 4px;
+  flex-direction: column;
+  background-color: rgba(162, 162, 162, 0.674);
+  color: black;
+  width: 200px;
+  padding: 4px;
+}
 
+.single-info{
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
 }
 
 #output-text-div{
