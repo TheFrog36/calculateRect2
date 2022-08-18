@@ -72,21 +72,21 @@ class Rectangle {
     return newRect
   }
 
-  static generateSimilarRect(rectangle, canvasHeight, canvasWidth){
-    const maxColorDifference = 30
-    const maxSizeDifference = 100
-    const maxRotationDifference = this.degToRad(15)
-    const maxOffset = 100
-    const maxAlphaDifference = 0.5
+  static generateSimilarRect(rectangle, canvasHeight, canvasWidth, maxColorDifference, maxSizeDifference, maxRotationDifference, maxOffset, maxAlphaDifference){
+    // const maxColorDifference = 30
+    // const maxSizeDifference = 100
+    // const maxRotationDifference = this.degToRad(15)
+    // const maxOffset = 100
+    // const maxAlphaDifference = 0.5
     const red = Math.round(this.clamp(rectangle.red + Math.random() * (maxColorDifference * 2) - maxColorDifference, 0, 255))
     const green = Math.round(this.clamp(rectangle.green + Math.random() * (maxColorDifference * 2) - maxColorDifference, 0, 255))
     const blue = Math.round(this.clamp(rectangle.blue + Math.random() * (maxColorDifference * 2) - maxColorDifference, 0, 255))
     const alpha = Math.round(this.clamp(rectangle.alpha + Math.random() * maxAlphaDifference * 2 - maxAlphaDifference, 0.1, 1) * 100) / 100
     const width = Math.round(Math.max(2, rectangle.width + Math.random() * (maxSizeDifference * 2) - maxSizeDifference))
     const height = Math.round(Math.max(2, rectangle.height + Math.random() * (maxSizeDifference * 2) - maxSizeDifference))
-    const rad = Math.round((rectangle.rad + Math.random() * maxRotationDifference * 2 - maxRotationDifference) * 100) / 100
-    const x = this.clamp(rectangle.x + Math.random() * maxOffset * 2 - maxOffset, 0, canvasWidth)
-    const y = this.clamp(rectangle.y + Math.random() * maxOffset * 2 - maxOffset, 0, canvasHeight)
+    const rad = Math.round(this.clamp(rectangle.rad + Math.random() * maxRotationDifference * 2 - maxRotationDifference, 0, this.degToRad(90)) *  100 ) / 100
+    const x = Math.round(this.clamp(rectangle.x + Math.random() * maxOffset * 2 - maxOffset, 0, canvasWidth))
+    const y = Math.round(this.clamp(rectangle.y + Math.random() * maxOffset * 2 - maxOffset, 0, canvasHeight))
     const newRectangle = new Rectangle(red, green, blue, alpha, width, height, rad, x, y)
     return newRectangle
   }

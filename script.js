@@ -1,13 +1,16 @@
 let width // Canvas width based on img width
 let height // Canvas height based on img height
-const maxRects = 100 // How many rects are created per cycle
-const topSelection = 1 // Select the top 10 from a generation
-const numberOfGenerations = 1 // How many generations 
-const numberOfCycles = 20000 // How many rects will be added to the final image
+
+const maxRects = 1000 // How many rects are created per cycle
+const topSelection = 10 // Select the top 10 from a generation
+const numberOfGenerations = 20 // * 10 // How many generations 
+const nRectsFromOld = 10 // Generate N new rects from each rect of past gen
+const numberOfCycles = 3000 // How many rects will be added to the final image
 let rectMinSizeStart
 let rectMinSizeEnd
 let rectMaxSizeStart
 let rectMaxSizeEnd
+console.log(numberOfCycles * (maxRects + numberOfGenerations * topSelection * nRectsFromOld) + ' tot rects')
 // let exponent
 let rectArrayInfo = []
 let msTime = 0
@@ -22,7 +25,7 @@ const inputCTX = inputCanvas.getContext('2d')
 const worker = new Worker('./worker.js')
 let targetCanvasData // var for image pixel data
 
-const imgUrl = './images/monalisa.png'
+const imgUrl = './images/cyberpunk.png'
 
 function init(){
   msTime = new Date()
@@ -39,7 +42,8 @@ function init(){
       nOfRects: maxRects,
       cycles: numberOfCycles,
       top: topSelection,
-      generations: numberOfGenerations
+      generations: numberOfGenerations,
+      nRectsFromOld: nRectsFromOld
     })
     worker.addEventListener('message', handleResponse)
   }
@@ -51,7 +55,7 @@ function handleResponse(event){
       drawRectOnCanvas(event.data.rectangle, outputCTX)
       highlightRect(event.data.rectangle.x, event.data.rectangle.y)
       //drawVertices(event.data.vertices)
-      //drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry, event.data.rectangle)
+      //if(event.data.drawPeri) drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry)
       rectArrayInfo.push(...Object.values(event.data.rectangle))
       break;
     case 'input canvas data':
@@ -62,12 +66,11 @@ function handleResponse(event){
       msTime = new Date() - msTime
       console.log('Time to complete: ' + (msTime/1000) + ' seconds')
       document.getElementById('highlight-div').style.display = 'none'
-      outputCanvas.style.display = 'none'
+      // outputCanvas.style.display = 'none'
       let diff = calculateDifferenceCanvas(dataArray, targetCanvasData.data)
       diff = Math.round(diff*100*100)/100
       console.log('Difference: ' + diff + '%')
-      console.log(rectArrayInfo)
-      displayOutputText()
+      //displayOutputText()
       break
   }
 }
@@ -101,8 +104,8 @@ function drawVertices(vertices){
   }
 }
 
-function drawPerimeter(perimeter, beginning, rectangle){
-  outputCTX.fillStyle = 'black'
+function drawPerimeter(perimeter, beginning){
+  outputCTX.fillStyle = 'red'
   if(beginning < 0) beginning = 1
   for(let i = beginning; i < perimeter.length; i++){
     if(perimeter[i] === undefined || (perimeter[i].length === 1 && (perimeter[i][0] === 0 || perimeter[i][0] === width))) continue 
@@ -156,7 +159,20 @@ function displayOutputText(){
   div.style.display = 'block'
   div.innerHTML = rectArrayInfo
 }
+
+function calcualteInitialDifference(){
+  let difference = 0
+  for(let y = 0; y < height; y++){
+    for(let x = 0; x < width; x++){
+      const pos = (y * width + x) * 4
+      difference += calculateDifference([0,0,0], [targetCanvasData.data[pos], targetCanvasData.data[pos+1], targetCanvasData.data[pos+2]])
+    }
+  }
+  return difference 
+}
+
 function start(){
 
 }
+
 init()
