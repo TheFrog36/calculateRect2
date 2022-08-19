@@ -80,10 +80,10 @@ input[type=number]{
   justify-content: space-between;
 }
 
-#setting-explanation-window{
+.explanation-window{
   display: flex;
   flex-direction: column;
-  /* display: none; */
+  display: none;
   position: absolute;
   left: -320px;
   width: 300px;
@@ -91,7 +91,6 @@ input[type=number]{
   padding: 4px;
   background-color: rgb(203, 203, 203);
   border-radius: 4px;
-
 }
 
 #infos{

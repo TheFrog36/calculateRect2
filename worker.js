@@ -24,6 +24,8 @@ let hasFired = false
 let bestScoresArray = new Array(10).fill(0)
 let bestRectArray = new Array(10)
 
+let pixelChecked = 0
+
 
 let gen = 0  // USed to show from whick generation the best rectangle comes from
 if ('function' === typeof importScripts) {
@@ -58,6 +60,7 @@ if ('function' === typeof importScripts) {
           rectangle.putColors(targetData.data[pos], targetData.data[pos + 1], targetData.data[pos + 2])
           vertices = rectangle.calculateVertices()
           perimeterArray = rectangle.calculatePerimeterArray(vertices, canvasWidth, canvasHeight)
+          pixelChecked += calculateCheckedPixel(perimeterArray, vertices[3].Ry)
           const difference = checkRectangleDifference(rectangle, perimeterArray, outputArray, vertices[3].Ry)
           if (generations != 0 && difference > bestScoresArray[9] ) orderedInsertion(bestScoresArray, bestRectArray, difference, rectangle)
           if (difference > bestScore) {
@@ -78,6 +81,7 @@ if ('function' === typeof importScripts) {
               rectangle = Rectangle.generateSimilarRect(oldTopRects[k], canvasHeight, canvasWidth, data.maxColorDifference, data.maxSizeDifference, data.maxRotationDifference, data.maxOffset, data.maxAlphaDifference)
               vertices = rectangle.calculateVertices()
               perimeterArray = rectangle.calculatePerimeterArray(vertices, canvasWidth, canvasHeight)
+              pixelChecked += calculateCheckedPixel(perimeterArray, vertices[3].Ry)
               const difference = checkRectangleDifference(rectangle, perimeterArray, outputArray, vertices[3].Ry)
                if (difference > bestScoresArray[9]) orderedInsertion(bestScoresArray, bestRectArray, difference, rectangle)
                if (difference > bestScore) {
@@ -99,7 +103,14 @@ if ('function' === typeof importScripts) {
         //if(i%10 ===0) console.log('gen: ' + (gen + 1) + ' cycle: ' + i)
         gen = 0
         //bestRect.alpha = (bestRect.alpha + 1) / 2  //Only when using add2colors2 in checkRectangleDifference
-        self.postMessage({ info: 'rectangles', rectangle: bestRect, vertices: bestVertices, perimeter: bestPerimeter, emprovement: bestScore, drawPeri: drawPeri })
+        self.postMessage({ 
+          info: 'rectangles', 
+          rectangle: bestRect, 
+          vertices: bestVertices, 
+          perimeter: bestPerimeter, 
+          emprovement: bestScore, 
+          drawPeri: drawPeri,
+          pixelChecked: pixelChecked })
         drawRectOnInput(bestRect, bestPerimeter, bestVertices[3].Ry)
         bestScore = 0
       }
@@ -215,4 +226,15 @@ function orderedInsertion(scoreArray, rectArray, score, rectangle) {
   scoreArray.pop()
   rectArray[pos] = rectangle
   rectArray.pop()
+}
+
+function calculateCheckedPixel(array, start){
+  if(start < 0) start = 0
+  let pixels = 0
+  for(let i = start; i < array.length; i++){
+    if(array[i] === undefined) console.log(array, start)
+    if(array[i].length === 1) pixels++
+    else pixels += array[i][array[i].length-1] - array[i][0]
+  }
+  return pixels
 }

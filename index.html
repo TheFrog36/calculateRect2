@@ -21,7 +21,7 @@
       <div id="number-of-rectangles" class="settings-category">
         <div class="single-setting">
           <div class="settings-category-title">Quantity</div>
-          <div class="description-icon" onclick="quantityInfo()">i</div>
+          <div class="description-icon" id="quantity-info" onclick="quantityInfo()">i</div>
         </div>
         <div class="single-setting">
           <div class="settings-text">Number of cycles</div>
@@ -45,10 +45,10 @@
         </div>
       </div>
 
-      <div id="rectangle-sizes" class="settings-category">
+      <div id="rectangle-sizes" class="settings-category" style="display:none">
         <div class="single-setting">
           <div class="settings-category-title">Rectangle sizes</div>
-          <div class="description-icon">i</div>
+          <!-- <div class="description-icon">i</div> -->
         </div>        
         <div class="single-setting">
           <div class="settings-text">Min start</div>
@@ -72,11 +72,11 @@
         </div>
       </div>
 
-      <div id="setting-explanation-window">
-        <span>Quantity handles how many rectangles will be generated.</span>
-        <span><b>Number of cycles</b> determinates how many rectangle will compose the final image. The following settings will be applied for each cycle.</span> 
+      <div id="quantity-explanation-window" class="explanation-window">
+        <span><b>Quantity</b> handles how many rectangles will be generated.</span>
+        <span><b>Number of cycles</b> determines how many rectangle will compose the final image. The following settings will be applied for each cycle.</span> 
         <span><b>Starting R</b> is the amount of rectangles that will be generated for the first generation</span>
-        <span><b>N of generations</b> is the amount of generations after the first one</span>
+        <span><b>N of generations</b> is the amount of generations after the first one.</span>
         <span><b>Top selections</b> tells how many rectangles will be selected from the past generation and used to make the new one</span>
         <span><b>New R</b> is the amount of rectangles that will be generated for each rectangle of top selection. The difference between generations can be set in 'New gen diff'</span>
         <button onclick="showQuanitiyExample()">See example</button>
@@ -85,8 +85,8 @@
 
       <div id="new-gen-diff" class="settings-category">
         <div class="single-setting">
-          <div class="settings-category-title">New gen diff</div>
-          <div class="description-icon">i</div>
+          <div class="settings-category-title">Difference</div>
+          <div class="description-icon" id="difference-info" onclick="differenceInfo()">i</div>
         </div>        
         <div class="single-setting">
           <div class="settings-text">Color</div>
@@ -108,6 +108,16 @@
           <div class="settings-text">Alpha</div>
           <input type="number" id="alpha-difference-input" value="0.3">
         </div>
+      </div>
+
+      <div id="difference-explanation-window" class="explanation-window">
+        <span><b>Difference</b> determines how the rectangles from a generation will be different from the previous one.</span>
+        <span><b>Color</b> indicates how each RGB value can change. If the value is set to 10, and the preavius gen rectangle had RBG(50,30,255), the new rectangle will have RGB (40-60, 20-40, 245-255).</span>
+        <span><b>Size</b> tells how bigger or smaller the new rectangle will be from the past gen. It's calculated in pixels and influences the width and height of the rectangle. </span>
+        <span><b>Position</b> tells how the x and y value of the rectangle can change.</span>
+        <span><b>Rotation</b> is in degrees and it determines how much the new generation can rotate from the last one.</span>
+        <span><b>Alpha</b> changes the transaprency of the rectangles. It's a value between 0.1 and 1.</span>
+        <span style="margin-top: 8px;"><i>Notes</i>: if the image doesn't have much color variation, color should be left at values below 10. If size is set high (20+) and there are a good amount of generations(3+), the program initially will run slowly. This happens because in the first cycles, big rectangles will pass to next generations, and become even bigger in the next ones. This means more pixels will be checked and therefore slow down the execution. Past the first generations this shouldn't be a problem. </span>
       </div>
 
       <button onclick="start()" id="start-button">start</button>

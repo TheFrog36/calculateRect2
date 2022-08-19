@@ -23,6 +23,7 @@ let msTime = 0
 let currentCycle = 0
 let difference = -1
 let timeToComplete = -1
+let pixelsChecked = 0
 let rectArrayInfo = []
 
 const targetCanvas = document.getElementById('target-canvas')
@@ -84,6 +85,7 @@ function handleResponse(event) {
       //drawVertices(event.data.vertices)
       //if(event.data.drawPeri) drawPerimeter(event.data.perimeter, event.data.vertices[3].Ry)
       rectArrayInfo.push(...Object.values(event.data.rectangle))
+      pixelsChecked = event.data.pixelChecked
       updateInfos()
       break;
     case 'input canvas data':
@@ -225,11 +227,15 @@ function setSizes() {
 
 function setNewRFromOld() {
   maxColorDifference = document.getElementById('color-difference-input').valueAsNumber
+  clamp(maxColorDifference, 0, 100)
   maxSizeDifference = document.getElementById('size-difference-input').valueAsNumber
+  clamp(maxSizeDifference, -5, 100)
   maxRotationDifference = document.getElementById('rotation-difference-input').valueAsNumber
+  clamp(maxRotationDifference, 0, 45)
   maxRotationDifference = Math.round(Rectangle.degToRad(maxRotationDifference) * 100) / 100
   maxOffset = document.getElementById('position-difference-input').valueAsNumber
   maxAlphaDifference = document.getElementById('alpha-difference-input').valueAsNumber
+  clamp(maxAlphaDifference, 0.1, 1)
 }
 
 function updateInfos(){
@@ -248,7 +254,12 @@ function updateInfos(){
     <div class="single-info">
       <div class="info-name">Starting R</div>
       <div class="info-value">${maxRects}</div>
+    </div>
+    <div class="single-info">
+      <div class="info-name">Pixels checked</div>
+      <div class="info-value">${mark3Digits(pixelsChecked)}</div>
     </div>`
+
   info.innerHTML = templateBaseInfo
   const templateGenerationInfo = `
     <div class="single-info">
@@ -278,9 +289,10 @@ function updateInfos(){
 }
 
 function quantityInfo(){
-  const infoDiv = document.getElementById('setting-explanation-window')
-  document.getElementById('quantity-example-div').innerHTML = ''
-  infoDiv.style.display = 'flex'
+  document.getElementById('difference-explanation-window').style.display = 'none'
+  const infoDiv = document.getElementById('quantity-explanation-window')
+  if(infoDiv.style.display === 'none') infoDiv.style.display = 'flex'
+  else infoDiv.style.display = 'none'
 }
 
 function mark3Digits(number){
@@ -299,7 +311,6 @@ function showQuanitiyExample(){
   const generations = document.getElementById('n-generation-input').valueAsNumber
   const topSelection = document.getElementById('top-selection-input').valueAsNumber
   const newR = document.getElementById('n-R-from-old-input').valueAsNumber
-  console.log(cycles, startR, generations, topSelection, newR)
   const TR = cycles * (startR + generations * topSelection * newR) 
   const baseTemplate = `
     With the current settings,<b> ${cycles}</b> rectangles will be used to make the final image.<br>
@@ -313,3 +324,14 @@ function showQuanitiyExample(){
   const endTemplate = `A total of <b>${mark3Digits(TR)}</b> rectangles will be checked`
   div.innerHTML += endTemplate
 }
+
+function differenceInfo(){
+  document.getElementById('quantity-explanation-window').style.display = 'none'
+  const div = document.getElementById('difference-explanation-window')
+  if(div.style.display === 'none') div.style.display = 'flex'
+  else div.style.display = 'none'
+}
+
+function clamp(num, min, max){
+  return Math.min(Math.max(num, min), max);
+} 
