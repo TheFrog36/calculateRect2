@@ -58,7 +58,6 @@ function init() {
     canvasData: targetCanvasData,
     nOfRects: maxRects,
     cycles: numberOfCycles,
-    top: topSelection,
     generations: numberOfGenerations,
     nRectsFromOld: nRectsFromOld,
     exponent: reductionFactor,
@@ -66,7 +65,7 @@ function init() {
     maxColorDifference: maxColorDifference,
     maxSizeDifference: maxSizeDifference,
     maxRotationDifference: maxRotationDifference,
-    maxOffset: maxRotationDifference,
+    maxOffset: maxOffset,
     maxAlphaDifference: maxAlphaDifference,
     rectMinSizeStart: rectMinSizeStart,
     rectMinSizeEnd: rectMinSizeEnd,
@@ -200,7 +199,6 @@ function calcualteInitialDifference() {
   return difference
 }
 
-const button = document.getElementById('start-button')
 function start() {
   setRNumber()
   setSizes()
@@ -337,5 +335,8 @@ function clamp(num, min, max){
 } 
 
 function sizeInfo(){
+  console.log('ciao')
   const div = document.getElementById('size-explanation-window')
+  if(div.style.display === 'none') div.style.display = 'flex'
+  else div.style.display = 'none'
 }

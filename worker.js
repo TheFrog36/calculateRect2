@@ -20,9 +20,8 @@ let bestRect
 let bestPerimeter
 let bestScore = 0
 let bestVertices
-let hasFired = false
-let bestScoresArray = new Array(10).fill(0)
-let bestRectArray = new Array(10)
+let bestScoresArray 
+let bestRectArray
 
 let pixelChecked = 0
 
@@ -44,6 +43,8 @@ if ('function' === typeof importScripts) {
       newRectsFromOld = data.nRectsFromOld
       exponent = data.exponent
       topForNewGen = data.topSelection
+      bestScoresArray = new Array(topForNewGen).fill(0)
+       bestRectArray = new Array(topForNewGen)
 
       outputArray = new Array(canvasWidth * canvasHeight * 4)
       outputArray.fill(255)

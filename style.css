@@ -81,7 +81,6 @@ input[type=number]{
 }
 
 .explanation-window{
-  display: flex;
   flex-direction: column;
   display: none;
   position: absolute;
@@ -113,12 +112,11 @@ input[type=number]{
 }
 
 .description-icon{
-  background-color: grey;
-  border-radius: 50%;
-  padding: 4px;
-  aspect-ratio: 1;
-  text-align: center;
-  font-style: italic;
+  height: 25px;
+}
+
+.description-icon img{
+  height: 100%;
 }
 
 #output-text-div{
