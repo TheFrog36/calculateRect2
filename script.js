@@ -212,6 +212,11 @@ function setRNumber() {
   topSelection = document.getElementById('top-selection-input').valueAsNumber
   numberOfGenerations = document.getElementById('n-generation-input').valueAsNumber
   nRectsFromOld = document.getElementById('n-R-from-old-input').valueAsNumber
+  numberOfCycles = Math.max(10,numberOfCycles)
+  maxRects = Math.max(10,maxRects)
+  topSelection = Math.max(1, topSelection)
+  topSelection = Math.max(0,topSelection)
+  nRectsFromOld = Math.max(1,nRectsFromOld)
 }
 
 function setSizes() {
@@ -220,7 +225,12 @@ function setSizes() {
   rectMaxSizeStart = document.getElementById('max-start-size-input').valueAsNumber
   rectMaxSizeEnd = document.getElementById('max-end-size-input').valueAsNumber
   reductionFactor = document.getElementById('reduction-factor-input').valueAsNumber
-  
+  reductionFactor = Math.max(0,reductionFactor)
+  rectMaxSizeStart = Math.max(2,rectMaxSizeStart)
+  rectMinSizeEnd = Math.max(0,rectMinSizeEnd)
+  rectMinSizeStart = Math.min(rectMaxSizeStart, rectMinSizeStart)
+  rectMinSizeEnd = Math.min(rectMaxSizeEnd)
+
 }
 
 function setNewRFromOld() {
@@ -335,8 +345,21 @@ function clamp(num, min, max){
 } 
 
 function sizeInfo(){
-  console.log('ciao')
   const div = document.getElementById('size-explanation-window')
   if(div.style.display === 'none') div.style.display = 'flex'
   else div.style.display = 'none'
+}
+
+function mosaic(){
+  numberOfCycles = 10000
+  maxRects = 100
+  numberOfGenerations = 0
+  topSelection = 1
+  nRectsFromOld = 1
+  reductionFactor = 0
+  rectMaxSizeStart = 0
+  rectMaxSizeEnd = 10
+  rectMinSizeEnd = 1
+  rectMinSizeStart = 1
+  init()
 }
