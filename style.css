@@ -25,7 +25,7 @@ html, body {
   left: 0px;
   top: 0px;
   background-color: red;
-  display: none;
+  /* display: none; */
 }
 
 #input-canvas{

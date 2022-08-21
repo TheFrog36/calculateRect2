@@ -335,3 +335,7 @@ function differenceInfo(){
 function clamp(num, min, max){
   return Math.min(Math.max(num, min), max);
 } 
+
+function sizeInfo(){
+  const div = document.getElementById('size-explanation-window')
+}
