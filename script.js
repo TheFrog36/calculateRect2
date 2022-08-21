@@ -38,7 +38,6 @@ let targetCanvasData // var for image pixel data
 
 const imgUrl = './images/cat.png'
 
-msTime = new Date()
 const targetImage = new Image()
 targetImage.src = imgUrl
 targetImage.onload = () => {
@@ -49,6 +48,7 @@ targetImage.onload = () => {
 }
 
 function init() {
+  msTime = new Date()
   document.getElementById('highlight-div').style.display = 'block';
   document.getElementById('settings').style.display = 'none'
   document.getElementById('infos').style.display = 'flex'
@@ -298,6 +298,7 @@ function updateInfos(){
 
 function quantityInfo(){
   document.getElementById('difference-explanation-window').style.display = 'none'
+  document.getElementById('size-explanation-window').style.display = 'none'
   const infoDiv = document.getElementById('quantity-explanation-window')
   if(infoDiv.style.display === 'none') infoDiv.style.display = 'flex'
   else infoDiv.style.display = 'none'
@@ -335,6 +336,7 @@ function showQuanitiyExample(){
 
 function differenceInfo(){
   document.getElementById('quantity-explanation-window').style.display = 'none'
+  document.getElementById('size-explanation-window').style.display = 'none'
   const div = document.getElementById('difference-explanation-window')
   if(div.style.display === 'none') div.style.display = 'flex'
   else div.style.display = 'none'
@@ -345,6 +347,8 @@ function clamp(num, min, max){
 } 
 
 function sizeInfo(){
+  document.getElementById('quantity-explanation-window').style.display = 'none'
+  document.getElementById('difference-explanation-window').style.display = 'none'
   const div = document.getElementById('size-explanation-window')
   if(div.style.display === 'none') div.style.display = 'flex'
   else div.style.display = 'none'

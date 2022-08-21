@@ -49,10 +49,10 @@
       <div id="quantity-explanation-window" class="explanation-window">
         <span><b>Quantity</b> handles how many rectangles will be generated.</span>
         <span><b>Number of cycles</b> determines how many rectangle will compose the final image. The following settings will be applied for each cycle.</span> 
-        <span><b>Starting R</b> is the amount of rectangles that will be generated for the first generation</span>
+        <span><b>Starting R</b> is the amount of rectangles that will be generated for the first generation.</span>
         <span><b>N of generations</b> is the amount of generations after the first one.</span>
-        <span><b>Top selections</b> tells how many rectangles will be selected from the past generation and used to make the new one</span>
-        <span><b>New R</b> is the amount of rectangles that will be generated for each rectangle of top selection. The difference between generations can be set in 'New gen diff'</span>
+        <span><b>Top selections</b> tells how many rectangles will be selected from the past generation and used to make the new one.</span>
+        <span><b>New R</b> is the amount of rectangles that will be generated for each rectangle of top selection. The difference between generations can be set in 'Difference'.</span>
         <button onclick="showQuanitiyExample()">See example</button>
         <div id="quantity-example-div"></div>
       </div>
@@ -84,12 +84,13 @@
         </div>
       </div>
       <div id="size-explanation-window" class="explanation-window">
+        <span><b>Rectangle sizes</b> determines how the size of the rectangles will change as the number of cycle increases.</span>
         <span><b>Min start</b> is the smalles amount the rectangle can be in the first cycle.</span>
-        <span><b>Min end </b> is the minimum width-height the rectangle can be in the last cycle</span>
+        <span><b>Min end </b> is the minimum width-height the rectangle can be in the last cycle.</span>
         <span><b>Max start</b> describes the biggest possible rectangle in the first cycle.</span>
         <span><b>Max end</b> describes the biggest possible rectangle in the last cycle.</span>
         <span><b>Reduction factor</b> determines how fast the rectangle sizes will shift toward the min size. If set to 1, the reduction will be linear. If set with higher numbers, the reduction will be exponential.</span>
-        <span><i>Notes</i>: min start has to be smaller than max start and min end smaller than max end. If cycle is set to high numbers like 10'000, reduction factor can be high, like 20 or more. But for lower number of cycles, like 3'000, R.F. should be left below 6 for decent results. High number of R.F.</span>
+        <span><i>Notes</i>: min start has to be smaller than max start and min end smaller than max end. If cycle is set to high numbers like 10'000, reduction factor can be high, like 20 or more. But for lower number of cycles, like 3'000, R.F. should be left below 6 for decent results.</span>
       </div>
 
       <div id="new-gen-diff" class="settings-category">
