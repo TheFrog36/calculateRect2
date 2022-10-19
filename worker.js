@@ -38,14 +38,13 @@ if ('function' === typeof importScripts) {
       canvasHeight = data.canvasData.height
       nOfRects = data.nOfRects
       cycles = data.cycles
-      topForNewGen = data.top
       generations = data.generations
       newRectsFromOld = data.nRectsFromOld
       exponent = data.exponent
-      topForNewGen = data.topSelection
+      topForNewGen = data.topForNewGen
       bestScoresArray = new Array(topForNewGen).fill(0)
-       bestRectArray = new Array(topForNewGen)
-
+      bestRectArray = new Array(topForNewGen)
+      // console.log(bestRectArray.length)
       outputArray = new Array(canvasWidth * canvasHeight * 4)
       outputArray.fill(255)
       let counter = 0
@@ -63,7 +62,9 @@ if ('function' === typeof importScripts) {
           perimeterArray = rectangle.calculatePerimeterArray(vertices, canvasWidth, canvasHeight)
           pixelChecked += calculateCheckedPixel(perimeterArray, vertices[3].Ry)
           const difference = checkRectangleDifference(rectangle, perimeterArray, outputArray, vertices[3].Ry)
-          if (generations != 0 && difference > bestScoresArray[9] ) orderedInsertion(bestScoresArray, bestRectArray, difference, rectangle)
+          if (generations != 0 && difference > bestScoresArray[9] ){ 
+            orderedInsertion(bestScoresArray, bestRectArray, difference, rectangle)
+          }
           if (difference > bestScore) {
             bestRect = rectangle
             bestPerimeter = perimeterArray
@@ -73,12 +74,13 @@ if ('function' === typeof importScripts) {
         }
         // Adesso ho la gen 1 array
         for (let j = 0; j < generations; j++) {
-          //console.log(bestRectArray)
           const oldTopRects = bestRectArray
+          // console.log(oldTopRects)
           for (let k = 0; k < oldTopRects.length; k++) {
             for(let l = 0; l < newRectsFromOld; l++){
               counter++
-              if(oldTopRects[k] === undefined) continue
+              if(oldTopRects[k] === undefined || generations === 1) continue
+              // console.log('yoo')
               rectangle = Rectangle.generateSimilarRect(oldTopRects[k], canvasHeight, canvasWidth, data.maxColorDifference, data.maxSizeDifference, data.maxRotationDifference, data.maxOffset, data.maxAlphaDifference)
               vertices = rectangle.calculateVertices()
               perimeterArray = rectangle.calculatePerimeterArray(vertices, canvasWidth, canvasHeight)
