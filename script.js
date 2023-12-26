@@ -36,7 +36,7 @@ const inputCTX = inputCanvas.getContext('2d')
 const worker = new Worker('./worker.js')
 let targetCanvasData // var for image pixel data
 
-const imgUrl = './images/cyberpunk.png'
+const imgUrl = './images/cat.png'
 
 const targetImage = new Image()
 targetImage.src = imgUrl
